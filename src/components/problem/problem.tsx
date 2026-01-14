@@ -1,20 +1,63 @@
+'use client';
+
+import { useConfiguration } from "@/providers/configuration-provider";
+
 export default function Problem({ number1, operator, number2 }: { number1: number, operator: string, number2: number }) {
+    const { spaceBorders, spaceHints } = useConfiguration();
+
+    let numOfSpace: number = spaceHints
+        ?
+        (number1 + number2).toString().split('').length
+        :
+        (number1.toString().split('').length > number2.toString().split('').length) ? number1.toString().split('').length : number2.toString().split('').length
+        ;
+
+    const maxNumSpace = Array.from({ length: numOfSpace }, (_, i) => i);
+
+    const num1 = number1.toString().padStart(numOfSpace, ' ');
+    const num2 = number2.toString().padStart(numOfSpace, ' ');
+
     return (
-        <div className="flex flex-col w-25 text-4xl items-center m-8">
-            <div className="flex w-15 h-full">
-                <div className="flex items-center">
-                    +
+        <div className="flex flex-row text-2xl m-5 w-40 justify-center">
+            <div className="flex flex-col items-center">
+                <div className="flex h-full">
+                    <div className='p-2 w-10 text-center'>&nbsp;</div>
+                    {
+                        maxNumSpace.map((num, i) =>
+                            <div key={i} className={`${spaceBorders && 'border border-dotted'} p-2 w-10 text-center`}>{num1[i]}</div>
+                        )
+                    }
                 </div>
-                <div className="flex w-full flex-col items-end">
-                    <div>
-                        {number1}
-                    </div>
-                    <div>
-                        {number2}
-                    </div>
+                <div className="flex h-full">
+                    <div className='p-2 w-10 text-center'>{getOperatorSymbol(operator)}</div>
+                    {
+                        maxNumSpace.map((num, i) =>
+                            <div key={i} className={`${spaceBorders && 'border border-dotted'} p-2 w-10 text-center`}>{num2[i]}</div>
+                        )
+                    }
+                </div>
+                <div className="flex h-full">
+                    <div className={`${spaceBorders} border-t-2 p-2 w-10 text-center`}>&nbsp;</div>
+                    {
+                        maxNumSpace.map((num, i) =>
+                            <div key={i} className={`${spaceBorders && 'border'} border-t-2 p-2 w-10 text-center`}>&nbsp;</div>
+                        )
+                    }
                 </div>
             </div>
-            <div className="flex w-full border-b-4 pt-2"></div>
         </div>
     )
+}
+
+function getOperatorSymbol(operator: string) {
+    switch (operator) {
+        case 'add':
+            return '+';
+        case 'subtract':
+            return '-';
+        case 'multiply':
+            return 'x';
+        case 'divide':
+            return '/';
+    }
 }
