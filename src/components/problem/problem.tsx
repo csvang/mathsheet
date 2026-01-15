@@ -1,21 +1,28 @@
 'use client';
 
 import { useConfiguration } from "@/providers/configuration-provider";
+import { useEffect, useState } from "react";
 
 export default function Problem({ number1, operator, number2 }: { number1: number, operator: string, number2: number }) {
     const { spaceBorders, spaceHints } = useConfiguration();
 
-    let numOfSpace: number = spaceHints
-        ?
-        (number1 + number2).toString().split('').length
-        :
-        (number1.toString().split('').length > number2.toString().split('').length) ? number1.toString().split('').length : number2.toString().split('').length
-        ;
+    const [maxNumSpace, setMaxNumSpace] = useState<number[]>([]);
+    
+    const [num1, setNum1] = useState('');
+    const [num2, setNum2] = useState('');
 
-    const maxNumSpace = Array.from({ length: numOfSpace }, (_, i) => i);
+    useEffect(() => {
+        const numOfSpace = spaceHints
+            ?
+            (number1 + number2).toString().split('').length
+            :
+            (number1.toString().split('').length > number2.toString().split('').length) ? number1.toString().split('').length : number2.toString().split('').length
 
-    const num1 = number1.toString().padStart(numOfSpace, ' ');
-    const num2 = number2.toString().padStart(numOfSpace, ' ');
+        setMaxNumSpace(Array.from({ length: numOfSpace }, (_, i) => i));
+
+        setNum1(number1.toString().padStart(numOfSpace, ' '));
+        setNum2(number2.toString().padStart(numOfSpace, ' '));
+    }, [number1, number2]);
 
     return (
         <div className="flex flex-row text-2xl m-5 w-40 justify-center">
