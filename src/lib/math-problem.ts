@@ -45,6 +45,13 @@ export function generateMathSheet(topMin: number, topMax: number, bottomMin: num
     return problems;
 }
 
+function shuffleMathSheet(problems: IProblem[]): IProblem[] {
+    for (let i = problems.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [problems[i], problems[j]] = [problems[j], problems[i]];
+    }
+    return problems;
+}
 
 function getRandomNumber(min: number, max: number) {
 //   const cleanMin = (min) ? parseFloat(min) : 0;
