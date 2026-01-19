@@ -16,7 +16,7 @@ interface IConfiguration {
     setNumberBottomMax: (number: string) => void;
 
     // Operators
-    operators: string[];
+    operators: IConfigureOperator[];
     addOperator: (oper: string) => void;
     removeOperator: (oper: string) => void;
     numberOfAdd: string;
@@ -35,6 +35,11 @@ interface IConfiguration {
     toggleHints: () => void;
 }
 
+export interface IConfigureOperator {
+    operator: string;
+    numberOfProblems: string;
+}
+
 // Create the context
 const ConfigContext = createContext<IConfiguration | undefined>(undefined);
 
@@ -48,7 +53,7 @@ export function ConfigurationProviders({ children }: { children: ReactNode }) {
     const [spaceBorders, setSpaceBorders] = useState(false);
     const [spaceHints, setSpaceHints] = useState(false);
 
-    const [operators, setOperators] = useState<string[]>(['add']);
+    const [operators, setOperators] = useState<IConfigureOperator[]>([{ operator: 'add', numberOfProblems: '10' }]);
     const [numberOfAdd, setNumberOfAdd] = useState<string>('10');
     const [numberOfSubtract, setNumberOfSubtract] = useState<string>('10');
     const [numberOfMultply, setNumberOfMultiply] = useState<string>('10');
@@ -59,11 +64,11 @@ export function ConfigurationProviders({ children }: { children: ReactNode }) {
 
 
     function addOperator(oper: string) {
-        setOperators([...operators, oper]);
+        setOperators([...operators, { operator: oper, numberOfProblems: '10' }]);
     }
 
     function removeOperator(oper: string) {
-        setOperators(operators.filter((o) => o !== oper))
+        setOperators(operators.filter((o) => o.operator !== oper))
     }
 
 

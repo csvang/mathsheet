@@ -21,6 +21,8 @@ import { Switch } from "../ui/switch";
 import { useConfiguration } from "@/providers/configuration-provider";
 import { Input } from "../ui/input";
 import { useState } from "react";
+import { Button } from "../ui/button";
+import { generateMathSheet } from "@/lib/math-problem";
 
 
 const unkempt = Unkempt({
@@ -30,10 +32,10 @@ const unkempt = Unkempt({
 });
 
 export function AppSidebar() {
-  const { toggleBorders, toggleHints, 
-          operators, addOperator, removeOperator,
-          numberOfAdd, numberOfSubtract, numberOfMultply, numberOfDivide, setNumberOfAdd, setNumberOfSubtract, setNumberOfMultiply, setNumberOfDivide, 
-          numberTopMin, numberTopMax, numberBottomMin, numberBottomMax, setNumberTopMin, setNumberTopMax, setNumberBottomMin, setNumberBottomMax } = useConfiguration();
+  const { toggleBorders, toggleHints,
+    operators, addOperator, removeOperator,
+    numberOfAdd, numberOfSubtract, numberOfMultply, numberOfDivide, setNumberOfAdd, setNumberOfSubtract, setNumberOfMultiply, setNumberOfDivide,
+    numberTopMin, numberTopMax, numberBottomMin, numberBottomMax, setNumberTopMin, setNumberTopMax, setNumberBottomMin, setNumberBottomMax } = useConfiguration();
 
 
   function handleOperator(value: boolean, operator: string) {
@@ -42,6 +44,18 @@ export function AppSidebar() {
     } else {
       removeOperator(operator);
     }
+  }
+
+  function handleGenerateSheet() {
+    console.log('Generating Sheet...');
+    const mathSheet = generateMathSheet(
+      parseInt(numberTopMin),
+      parseInt(numberTopMax),
+      parseInt(numberBottomMin),
+      parseInt(numberBottomMax),
+      operators
+    );
+    console.log(mathSheet);
   }
 
   return (
@@ -79,38 +93,38 @@ export function AppSidebar() {
             <SidebarMenu>
               <SidebarMenuItem className="flex mb-2 justify-between">
                 <div className="flex items-center">
-                  <Switch id="operator-add" onCheckedChange={(e) => handleOperator(e, "add")} checked={operators.includes('add')}/>
+                  <Switch id="operator-add" onCheckedChange={(e) => handleOperator(e, "add")} checked={operators.some(o => o.operator === 'add')} />
                   <Label htmlFor="operator-add" className="pl-2" >Add</Label>
                 </div>
                 <div>
-                  <Input type="number" value={numberOfAdd} onChange={(e) => setNumberOfAdd(e.target.value)} className="w-20" disabled={!operators.includes('add')}></Input>
+                  <Input type="number" value={numberOfAdd} onChange={(e) => setNumberOfAdd(e.target.value)} className="w-20" disabled={!operators.some(o => o.operator === 'add')}></Input>
                 </div>
               </SidebarMenuItem>
               <SidebarMenuItem className="flex mb-2 justify-between">
                 <div className="flex items-center">
-                  <Switch id="operator-substract" onCheckedChange={(e) => handleOperator(e, "subtract")} checked={operators.includes('subtract')}/>
+                  <Switch id="operator-substract" onCheckedChange={(e) => handleOperator(e, "subtract")} checked={operators.some(o => o.operator === 'subtract')} />
                   <Label htmlFor="operator-subtract" className="pl-2" >Substract</Label>
                 </div>
                 <div>
-                  <Input type="number" value={numberOfSubtract} onChange={(e) => setNumberOfSubtract(e.target.value)} className="w-20" disabled={!operators.includes('subtract')}></Input>
+                  <Input type="number" value={numberOfSubtract} onChange={(e) => setNumberOfSubtract(e.target.value)} className="w-20" disabled={!operators.some(o => o.operator === 'subtract')}></Input>
                 </div>
               </SidebarMenuItem>
               <SidebarMenuItem className="flex mb-2 justify-between">
                 <div className="flex items-center">
-                  <Switch id="operator-multiply" onCheckedChange={(e) => handleOperator(e, "multiply")} checked={operators.includes('multiply')}/>
+                  <Switch id="operator-multiply" onCheckedChange={(e) => handleOperator(e, "multiply")} checked={operators.some(o => o.operator === 'multiply')} />
                   <Label htmlFor="operator-multiply" className="pl-2" >Multiply</Label>
                 </div>
                 <div>
-                  <Input type="number" value={numberOfMultply} onChange={(e) => setNumberOfMultiply(e.target.value)} className="w-20" disabled={!operators.includes('multiply')}></Input>
+                  <Input type="number" value={numberOfMultply} onChange={(e) => setNumberOfMultiply(e.target.value)} className="w-20" disabled={!operators.some(o => o.operator === 'multiply')}></Input>
                 </div>
               </SidebarMenuItem>
               <SidebarMenuItem className="flex mb-2 justify-between">
                 <div className="flex items-center">
-                  <Switch id="operator-divide" onCheckedChange={(e) => handleOperator(e, "divide")} disabled={true} checked={operators.includes('divide')}/>
+                  <Switch id="operator-divide" onCheckedChange={(e) => handleOperator(e, "divide")} disabled={true} checked={operators.some(o => o.operator === 'divide')} />
                   <Label htmlFor="operator-divide" className="pl-2" >Divide</Label>
                 </div>
                 <div>
-                  <Input type="number" value={numberOfDivide} onChange={(e) => setNumberOfDivide(e.target.value)} className="w-20" disabled={!operators.includes('divide')}></Input>
+                  <Input type="number" value={numberOfDivide} onChange={(e) => setNumberOfDivide(e.target.value)} className="w-20" disabled={!operators.some(o => o.operator === 'divide')}></Input>
                 </div>
               </SidebarMenuItem>
             </SidebarMenu>
@@ -133,7 +147,11 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <div>{operators}</div>
+        <SidebarMenu>
+          <SidebarMenuItem className="mb-4 mt-4 w-full text-center font-bold">
+            <Button variant="outline" className="w-full" onClick={handleGenerateSheet}>Generate Sheet</Button>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
   )
