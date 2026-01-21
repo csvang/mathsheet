@@ -33,6 +33,7 @@ const unkempt = Unkempt({
 
 export function AppSidebar() {
   const { toggleBorders, toggleHints,
+    setWorkSheet,
     operators, addOperator, removeOperator,
     numberOfAdd, numberOfSubtract, numberOfMultply, numberOfDivide, setNumberOfAdd, setNumberOfSubtract, setNumberOfMultiply, setNumberOfDivide,
     numberTopMin, numberTopMax, numberBottomMin, numberBottomMax, setNumberTopMin, setNumberTopMax, setNumberBottomMin, setNumberBottomMax } = useConfiguration();
@@ -55,6 +56,7 @@ export function AppSidebar() {
       parseInt(numberBottomMax),
       operators
     );
+    setWorkSheet(mathSheet);
     console.log(mathSheet);
   }
 

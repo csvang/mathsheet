@@ -1,9 +1,14 @@
 'use client';
 
+import IProblem from '@/interface/IProblems';
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 
 interface IConfiguration {
+    // Sheet
+    workSheet: IProblem[];
+    setWorkSheet: (problems: IProblem[]) => void;
+
     // Numbers
     numberTopMin: string;
     numberTopMax: string;
@@ -45,6 +50,8 @@ const ConfigContext = createContext<IConfiguration | undefined>(undefined);
 
 // Create the provider component
 export function ConfigurationProviders({ children }: { children: ReactNode }) {
+    const [workSheet, setWorkSheet] = useState<IProblem[]>([]);
+
     const [numberTopMin, setNumberTopMin] = useState<string>('0');
     const [numberTopMax, setNumberTopMax] = useState<string>('9');
     const [numberBottomMin, setNumberBottomMin] = useState<string>('0');
@@ -62,7 +69,6 @@ export function ConfigurationProviders({ children }: { children: ReactNode }) {
     function toggleBorders() { setSpaceBorders(!spaceBorders); }
     function toggleHints() { setSpaceHints(!spaceHints); }
 
-
     function addOperator(oper: string) {
         setOperators([...operators, { operator: oper, numberOfProblems: '10' }]);
     }
@@ -75,6 +81,7 @@ export function ConfigurationProviders({ children }: { children: ReactNode }) {
 
     return (
         <ConfigContext.Provider value={{
+            workSheet, setWorkSheet,
             spaceBorders, spaceHints, toggleBorders, toggleHints, 
             operators, addOperator, removeOperator, 
             numberOfAdd, numberOfSubtract, numberOfMultply, numberOfDivide, setNumberOfAdd, setNumberOfSubtract, setNumberOfMultiply, setNumberOfDivide, 
