@@ -34,16 +34,36 @@ const unkempt = Unkempt({
 export function AppSidebar() {
   const { toggleBorders, toggleHints,
     setWorkSheet,
-    operators, addOperator, removeOperator,
+    operators, addOperator, removeOperator, modifyOperatorNumberOfProblems,
     numberOfAdd, numberOfSubtract, numberOfMultply, numberOfDivide, setNumberOfAdd, setNumberOfSubtract, setNumberOfMultiply, setNumberOfDivide,
     numberTopMin, numberTopMax, numberBottomMin, numberBottomMax, setNumberTopMin, setNumberTopMax, setNumberBottomMin, setNumberBottomMax } = useConfiguration();
 
 
-  function handleOperator(value: boolean, operator: string) {
+  function handleOperator(value: boolean, operator: string, numOfProblems: string) {
+    console.log('[OPERATOR]', operator, numOfProblems)
     if (value) {
-      addOperator(operator);
+      addOperator(operator, numOfProblems);
     } else {
       removeOperator(operator);
+    }
+  }
+
+  function handleNumberOfProblems(operator: string, numOfProblems: string) {
+    modifyOperatorNumberOfProblems(operator, numOfProblems);
+
+    switch (operator) {
+      case 'add':
+        setNumberOfAdd(numOfProblems);
+        break;
+      case 'subtract':
+        setNumberOfSubtract(numOfProblems);
+        break;
+      case 'multiply':
+        setNumberOfMultiply(numOfProblems);
+        break;
+      case 'divide':
+        setNumberOfDivide(numOfProblems);
+        break;
     }
   }
 
@@ -57,7 +77,8 @@ export function AppSidebar() {
       operators
     );
     setWorkSheet(mathSheet);
-    console.log(mathSheet);
+    // console.log(mathSheet);
+    // console.log(operators);
   }
 
   return (
@@ -95,38 +116,38 @@ export function AppSidebar() {
             <SidebarMenu>
               <SidebarMenuItem className="flex mb-2 justify-between">
                 <div className="flex items-center">
-                  <Switch id="operator-add" onCheckedChange={(e) => handleOperator(e, "add")} checked={operators.some(o => o.operator === 'add')} />
+                  <Switch id="operator-add" onCheckedChange={(e) => handleOperator(e, "add", numberOfAdd)} checked={operators.some(o => o.operator === 'add')} />
                   <Label htmlFor="operator-add" className="pl-2" >Add</Label>
                 </div>
                 <div>
-                  <Input type="number" value={numberOfAdd} onChange={(e) => setNumberOfAdd(e.target.value)} className="w-20" disabled={!operators.some(o => o.operator === 'add')}></Input>
+                  <Input type="number" value={numberOfAdd} onChange={(e) => handleNumberOfProblems('add', e.target.value)} className="w-20" disabled={!operators.some(o => o.operator === 'add')}></Input>
                 </div>
               </SidebarMenuItem>
               <SidebarMenuItem className="flex mb-2 justify-between">
                 <div className="flex items-center">
-                  <Switch id="operator-substract" onCheckedChange={(e) => handleOperator(e, "subtract")} checked={operators.some(o => o.operator === 'subtract')} />
+                  <Switch id="operator-substract" onCheckedChange={(e) => handleOperator(e, "subtract", numberOfSubtract)} checked={operators.some(o => o.operator === 'subtract')} />
                   <Label htmlFor="operator-subtract" className="pl-2" >Substract</Label>
                 </div>
                 <div>
-                  <Input type="number" value={numberOfSubtract} onChange={(e) => setNumberOfSubtract(e.target.value)} className="w-20" disabled={!operators.some(o => o.operator === 'subtract')}></Input>
+                  <Input type="number" value={numberOfSubtract} onChange={(e) => handleNumberOfProblems('subtract', e.target.value)} className="w-20" disabled={!operators.some(o => o.operator === 'subtract')}></Input>
                 </div>
               </SidebarMenuItem>
               <SidebarMenuItem className="flex mb-2 justify-between">
                 <div className="flex items-center">
-                  <Switch id="operator-multiply" onCheckedChange={(e) => handleOperator(e, "multiply")} checked={operators.some(o => o.operator === 'multiply')} />
+                  <Switch id="operator-multiply" onCheckedChange={(e) => handleOperator(e, "multiply", numberOfMultply)} checked={operators.some(o => o.operator === 'multiply')} />
                   <Label htmlFor="operator-multiply" className="pl-2" >Multiply</Label>
                 </div>
                 <div>
-                  <Input type="number" value={numberOfMultply} onChange={(e) => setNumberOfMultiply(e.target.value)} className="w-20" disabled={!operators.some(o => o.operator === 'multiply')}></Input>
+                  <Input type="number" value={numberOfMultply} onChange={(e) => handleNumberOfProblems('multiply', e.target.value)} className="w-20" disabled={!operators.some(o => o.operator === 'multiply')}></Input>
                 </div>
               </SidebarMenuItem>
               <SidebarMenuItem className="flex mb-2 justify-between">
                 <div className="flex items-center">
-                  <Switch id="operator-divide" onCheckedChange={(e) => handleOperator(e, "divide")} disabled={true} checked={operators.some(o => o.operator === 'divide')} />
+                  <Switch id="operator-divide" onCheckedChange={(e) => handleOperator(e, "divide", numberOfDivide)} disabled={true} checked={operators.some(o => o.operator === 'divide')} />
                   <Label htmlFor="operator-divide" className="pl-2" >Divide</Label>
                 </div>
                 <div>
-                  <Input type="number" value={numberOfDivide} onChange={(e) => setNumberOfDivide(e.target.value)} className="w-20" disabled={!operators.some(o => o.operator === 'divide')}></Input>
+                  <Input type="number" value={numberOfDivide} onChange={(e) => handleNumberOfProblems('divide', e.target.value)} className="w-20" disabled={!operators.some(o => o.operator === 'divide')}></Input>
                 </div>
               </SidebarMenuItem>
             </SidebarMenu>

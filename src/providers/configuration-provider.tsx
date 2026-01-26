@@ -22,8 +22,9 @@ interface IConfiguration {
 
     // Operators
     operators: IConfigureOperator[];
-    addOperator: (oper: string) => void;
+    addOperator: (oper: string, numOfProblems: string) => void;
     removeOperator: (oper: string) => void;
+    modifyOperatorNumberOfProblems: (oper: string, numOfProblems: string) => void;
     numberOfAdd: string;
     setNumberOfAdd: (number: string) => void;
     numberOfSubtract: string;
@@ -32,6 +33,7 @@ interface IConfiguration {
     setNumberOfMultiply: (number: string) => void;
     numberOfDivide: string;
     setNumberOfDivide: (number: string) => void;
+    
 
     // Look and Feel
     spaceBorders: boolean;
@@ -69,8 +71,12 @@ export function ConfigurationProviders({ children }: { children: ReactNode }) {
     function toggleBorders() { setSpaceBorders(!spaceBorders); }
     function toggleHints() { setSpaceHints(!spaceHints); }
 
-    function addOperator(oper: string) {
-        setOperators([...operators, { operator: oper, numberOfProblems: '10' }]);
+    function addOperator(oper: string, numOfProblems: string) {
+        setOperators([...operators, { operator: oper, numberOfProblems: (numOfProblems ? numOfProblems : '0') }]);
+    }
+
+    function modifyOperatorNumberOfProblems(oper: string, numOfProblems: string) {
+        setOperators(operator => operator.map(o => o.operator === oper ? { ...o, numberOfProblems: numOfProblems } : o));
     }
 
     function removeOperator(oper: string) {
@@ -82,9 +88,9 @@ export function ConfigurationProviders({ children }: { children: ReactNode }) {
     return (
         <ConfigContext.Provider value={{
             workSheet, setWorkSheet,
-            spaceBorders, spaceHints, toggleBorders, toggleHints, 
-            operators, addOperator, removeOperator, 
-            numberOfAdd, numberOfSubtract, numberOfMultply, numberOfDivide, setNumberOfAdd, setNumberOfSubtract, setNumberOfMultiply, setNumberOfDivide, 
+            spaceBorders, spaceHints, toggleBorders, toggleHints,
+            operators, addOperator, removeOperator, modifyOperatorNumberOfProblems,
+            numberOfAdd, numberOfSubtract, numberOfMultply, numberOfDivide, setNumberOfAdd, setNumberOfSubtract, setNumberOfMultiply, setNumberOfDivide,
             numberTopMin, numberTopMax, numberBottomMin, numberBottomMax, setNumberTopMin, setNumberTopMax, setNumberBottomMin, setNumberBottomMax
         }}>
             {children}
