@@ -23,6 +23,7 @@ import { Input } from "../ui/input";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { generateMathSheet } from "@/lib/math-problem";
+import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from "../ui/combobox";
 
 
 const unkempt = Unkempt({
@@ -81,6 +82,8 @@ export function AppSidebar() {
     // console.log(operators);
   }
 
+  const lstDisplayItems =['Ascending', 'Descending', 'Random'];
+
   return (
     <Sidebar >
       <SidebarHeader>
@@ -92,7 +95,27 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem className="flex flex-col mb-2">
-                <Label htmlFor="top-number">Top Value Range:</Label>
+                <div className="flex mb-2 justify-between">
+                  <div>
+                    <Label htmlFor="top-number">Top Value Range:</Label>
+                  </div>
+                  {/* <div>
+                    <Combobox items={lstDisplayItems} >
+                      <ComboboxInput placeholder="Display" className="w-20" />
+                      <ComboboxContent className="w-35">
+                        <ComboboxEmpty>No items found.</ComboboxEmpty>
+                        <ComboboxList>
+                          {(item) => (
+                            <ComboboxItem key={item} value={item}>
+                              {item}
+                            </ComboboxItem>
+                          )}
+                        </ComboboxList>
+                      </ComboboxContent>
+                    </Combobox>
+                  </div> */}
+
+                </div>
                 <div>
                   <Input id="top-number" type="number" value={numberTopMin} className="w-20" onChange={(e) => setNumberTopMin(e.target.value)}></Input>
                   <span className="pl-5 pr-5">to</span>
@@ -105,6 +128,12 @@ export function AppSidebar() {
                   <Input id="bottom-number" type="number" value={numberBottomMin} className="w-20" onChange={(e) => setNumberBottomMin(e.target.value)}></Input>
                   <span className="pl-5 pr-5">to</span>
                   <Input id="bottom-number" type="number" value={numberBottomMax} className="w-20" onChange={(e) => setNumberBottomMax(e.target.value)}></Input>
+                </div>
+              </SidebarMenuItem>
+              <SidebarMenuItem className="flex mb-2 justify-between">
+                <div className="flex items-center">
+                  <Switch id="rand-number" onCheckedChange={(e) => false} disabled={true} checked={false} />
+                  <Label htmlFor="rand-number" className="pl-2" >Randomize</Label>
                 </div>
               </SidebarMenuItem>
             </SidebarMenu>
@@ -164,6 +193,15 @@ export function AppSidebar() {
               <SidebarMenuItem className="flex mb-2">
                 <Switch id="space-hints" onCheckedChange={toggleHints} />
                 <Label htmlFor="space-hints" className="pl-2" >Space Hints</Label>
+              </SidebarMenuItem>
+              <SidebarMenuItem className="flex mb-2 justify-between">
+                <div className="flex items-center">
+                  <Switch id="shuffle-problems" onCheckedChange={(e) => false} disabled={true} checked={false} />
+                  <Label htmlFor="shuffle-problems" className="pl-2" >Shuffle Problems</Label>
+                </div>
+                <div>
+                  <Button variant="outline" className="" onClick={undefined}>shuffle</Button>
+                </div>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
