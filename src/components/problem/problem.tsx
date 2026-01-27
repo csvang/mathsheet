@@ -22,7 +22,7 @@ export default function Problem({ number1, operator, number2 }: { number1: numbe
 
         setNum1(number1.toString().padStart(numOfSpace, ' '));
         setNum2(number2.toString().padStart(numOfSpace, ' '));
-    }, [number1, number2]);
+    }, [number1, number2, spaceBorders, spaceHints]);
 
     return (
         <div className="flex flex-row text-2xl m-5 w-40 justify-center">
