@@ -44,10 +44,10 @@ export default function Problem({ number1, operator, number2 }: { number1: numbe
                     }
                 </div>
                 <div className="flex h-full">
-                    <div className={`${spaceBorders} border-t-2 p-2 w-10 text-center`}>&nbsp;</div>
+                    <div className={`${spaceBorders} border-t-2 border-t-black p-2 w-10 text-center`}>&nbsp;</div>
                     {
                         maxNumSpace.map((num, i) =>
-                            <div key={i} className={`${spaceBorders && 'border'} border-t-2 p-2 w-10 text-center`}>&nbsp;</div>
+                            <div key={i} className={`${spaceBorders && 'border'} border-t-2 border-t-black p-2 w-10 text-center`}>&nbsp;</div>
                         )
                     }
                 </div>
