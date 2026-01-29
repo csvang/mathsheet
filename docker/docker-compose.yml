@@ -1,0 +1,5 @@
+services:
+  worksheets-app:
+    image: worksheets-app:alpha
+    ports: 
+      - 10301:3000
