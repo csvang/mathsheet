@@ -33,7 +33,7 @@ const unkempt = Unkempt({
 });
 
 export function AppSidebar() {
-  const { toggleBorders, toggleHints,
+  const {  spaceBorders,toggleBorders, toggleHints,
     setWorkSheet,
     operators, addOperator, removeOperator, modifyOperatorNumberOfProblems,
     numberOfAdd, numberOfSubtract, numberOfMultply, numberOfDivide, setNumberOfAdd, setNumberOfSubtract, setNumberOfMultiply, setNumberOfDivide,
@@ -191,7 +191,7 @@ export function AppSidebar() {
                 <Label htmlFor="space-borders" className="pl-2" >Space Borders</Label>
               </SidebarMenuItem>
               <SidebarMenuItem className="flex mb-2">
-                <Switch id="space-hints" onCheckedChange={toggleHints} />
+                <Switch id="space-hints" onCheckedChange={toggleHints} disabled={!spaceBorders} />
                 <Label htmlFor="space-hints" className="pl-2" >Space Hints</Label>
               </SidebarMenuItem>
               <SidebarMenuItem className="flex mb-2 justify-between">
